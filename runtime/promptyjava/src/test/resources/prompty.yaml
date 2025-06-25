@@ -1,0 +1,3 @@
+fake:
+  connection:
+    type: FAKE_TYPE
