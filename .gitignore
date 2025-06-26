@@ -3,6 +3,7 @@
 .runs/
 node_modules/
 dist/
+runtime/promptjava/target/
 runtime/promptycs/Prompty.Core/bin/
 runtime/promptycs/Prompty.Core/obj/
 runtime/promptycs/Tests/bin/
