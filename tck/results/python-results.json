@@ -3,7 +3,7 @@
     "test_id": "basic-parsing",
     "result": "pass",
     "runtime": "python",
-    "execution_time_ms": 1.461029052734375,
+    "execution_time_ms": 8.098125457763672,
     "output": {
       "frontmatter": {
         "name": "Basic Compatibility Test",
@@ -112,7 +112,7 @@
     "test_id": "basic-rendering",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 1.2679100036621094,
+    "execution_time_ms": 1.252889633178711,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   },
@@ -120,7 +120,7 @@
     "test_id": "env-var-resolution",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 0.9610652923583984,
+    "execution_time_ms": 7.285118103027344,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   },
@@ -128,7 +128,7 @@
     "test_id": "complex-template",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 1.3890266418457031,
+    "execution_time_ms": 2.1271705627441406,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   },
@@ -136,7 +136,7 @@
     "test_id": "function-calling-parsing",
     "result": "pass",
     "runtime": "python",
-    "execution_time_ms": 1.2710094451904297,
+    "execution_time_ms": 3.0603408813476562,
     "output": {
       "frontmatter": {
         "name": "Function Calling Test",
@@ -261,7 +261,7 @@
     "test_id": "missing-required-input",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 0.1239776611328125,
+    "execution_time_ms": 0.14519691467285156,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   },
@@ -269,7 +269,7 @@
     "test_id": "invalid-yaml",
     "result": "pass",
     "runtime": "python",
-    "execution_time_ms": 0.2627372741699219,
+    "execution_time_ms": 3.615140914916992,
     "output": {
       "expected_error": "Python parsing error: while parsing a flow sequence\n  in \"<unicode string>\", line 4, column 15:\n    invalid_yaml: [unclosed array\n                  ^\nexpected ',' or ']', but got ':'\n  in \"<unicode string>\", line 5, column 6:\n    model:\n         ^"
     }
@@ -278,7 +278,7 @@
     "test_id": "conditional-rendering",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 0.8780956268310547,
+    "execution_time_ms": 2.424955368041992,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   },
@@ -286,7 +286,7 @@
     "test_id": "missing-required-input",
     "result": "error",
     "runtime": "python",
-    "execution_time_ms": 0.07987022399902344,
+    "execution_time_ms": 7.2021484375,
     "error_message": "Python rendering error: module 'prompty' has no attribute 'load_from_content'",
     "error_type": "Exception"
   }

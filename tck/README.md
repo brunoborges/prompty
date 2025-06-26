@@ -73,6 +73,7 @@ End-to-end compatibility verification:
 # Run TCK for specific runtime only
 ./run-tck.sh --runtime python
 ./run-tck.sh --runtime csharp
+./run-tck.sh --runtime java
 
 # Run with performance monitoring
 ./run-tck.sh --performance

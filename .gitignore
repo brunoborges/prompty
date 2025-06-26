@@ -11,3 +11,4 @@ runtime/promptycs/Tests/obj/
 .env
 tck/csharp/obj
 tck/csharp/bin
+tck/java/target

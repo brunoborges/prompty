@@ -14,6 +14,8 @@ REPORTS_DIR="$TCK_DIR/reports"
 # Runtime-specific runner scripts
 PYTHON_RUNNER="$TCK_DIR/python/run-tck.sh"
 CSHARP_RUNNER="$TCK_DIR/csharp/run-tck.sh"
+JAVA_RUNNER="$TCK_DIR/java/run-tck.sh"
+JAVA_RUNNER="$TCK_DIR/java/run-tck.sh"
 
 # Colors for output
 RED='\033[0;31m'
@@ -116,6 +118,31 @@ run_csharp_tck() {
     fi
 }
 
+# Function to run Java TCK using the runtime-specific runner
+run_java_tck() {
+    print_status "Delegating to Java TCK runner..."
+    
+    if [ ! -f "$JAVA_RUNNER" ]; then
+        print_error "Java TCK runner not found at $JAVA_RUNNER"
+        return 1
+    fi
+    
+    if [ ! -x "$JAVA_RUNNER" ]; then
+        print_error "Java TCK runner is not executable: $JAVA_RUNNER"
+        return 1
+    fi
+    
+    local output_file="$RESULTS_DIR/java-results.json"
+    
+    if "$JAVA_RUNNER" "$output_file"; then
+        print_success "Java TCK completed successfully"
+        return 0
+    else
+        print_error "Java TCK failed"
+        return 1
+    fi
+}
+
 # Function to generate comparison report
 generate_report() {
     print_status "Generating compatibility report..."
@@ -123,7 +150,7 @@ generate_report() {
     local result_files=()
     
     # Collect available result files
-    for runtime in python csharp; do
+    for runtime in python csharp java; do
         local result_file="$RESULTS_DIR/${runtime}-results.json"
         if [[ -f "$result_file" ]]; then
             result_files+=("$result_file")
@@ -176,7 +203,7 @@ It delegates to runtime-specific runners for modular execution and generates com
 Usage: $0 [OPTIONS]
 
 OPTIONS:
-    --runtime RUNTIME    Run TCK for specific runtime only (python, csharp)
+    --runtime RUNTIME    Run TCK for specific runtime only (python, csharp, java)
     --quick             Run quick tests only (skip slow/comprehensive tests)
     --performance       Enable performance monitoring and metrics collection
     --debug             Enable debug mode with verbose output
@@ -189,13 +216,15 @@ OPTIONS:
 EXAMPLES:
     $0                          # Run full TCK for all runtimes
     $0 --runtime python         # Run TCK for Python only
-    $0 --runtime csharp         # Run TCK for C# only
+    $0 --runtime csharp         # Run TCK for C# only  
+    $0 --runtime java           # Run TCK for Java only
     $0 --quick --ci             # Quick run in CI mode
     $0 --performance --debug    # Full run with performance monitoring and debug
 
 RUNTIME-SPECIFIC RUNNERS:
     python/run-tck.sh           # Python TCK runner (standalone)
     csharp/run-tck.sh           # C# TCK runner (standalone)
+    java/run-tck.sh             # Java TCK runner (standalone)
 
 ENVIRONMENT VARIABLES:
     TCK_DEBUG               Enable debug mode (true/false)
@@ -207,10 +236,12 @@ ENVIRONMENT VARIABLES:
 SUPPORTED RUNTIMES:
     python                 Python runtime implementation
     csharp                 C# (.NET) runtime implementation
+    java                   Java runtime implementation
 
 For runtime-specific help, run:
     python/run-tck.sh --help
     csharp/run-tck.sh --help
+    java/run-tck.sh --help
 
 EOF
 }
@@ -294,8 +325,8 @@ if [ "$CI_MODE" = true ]; then
 fi
 
 # Validate runtime if specified
-if [[ -n "$RUNTIME_FILTER" && "$RUNTIME_FILTER" != "python" && "$RUNTIME_FILTER" != "csharp" ]]; then
-    print_error "Invalid runtime: $RUNTIME_FILTER. Must be one of: python, csharp"
+if [[ -n "$RUNTIME_FILTER" && "$RUNTIME_FILTER" != "python" && "$RUNTIME_FILTER" != "csharp" && "$RUNTIME_FILTER" != "java" ]]; then
+    print_error "Invalid runtime: $RUNTIME_FILTER. Must be one of: python, csharp, java"
     exit 1
 fi
 
@@ -316,6 +347,7 @@ main() {
     
     local python_result=0
     local csharp_result=0
+    local java_result=0
     
     # Run tests based on runtime filter using delegated runners
     if [ -z "$RUNTIME_FILTER" ] || [ "$RUNTIME_FILTER" = "python" ]; then
@@ -332,6 +364,13 @@ main() {
         fi
     fi
     
+    if [ -z "$RUNTIME_FILTER" ] || [ "$RUNTIME_FILTER" = "java" ]; then
+        print_status "Running Java TCK via runtime-specific runner..."
+        if ! run_java_tck; then
+            java_result=1
+        fi
+    fi
+    
     # Generate reports only if not filtered to single runtime
     if [ -z "$RUNTIME_FILTER" ]; then
         generate_report
@@ -340,7 +379,7 @@ main() {
     fi
     
     # Exit with error code if any runtime failed
-    local total_failures=$((python_result + csharp_result))
+    local total_failures=$((python_result + csharp_result + java_result))
     if [ $total_failures -gt 0 ]; then
         print_error "TCK completed with $total_failures runtime failure(s)"
         exit 1
