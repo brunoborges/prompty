@@ -443,7 +443,9 @@ public class Prompty {
 
         // Metadata
         prompty.setId((String) frontmatter.get("id"));
-        prompty.setVersion((String) frontmatter.getOrDefault("version", ""));
+        // Handle version as either String or Number and convert to String
+        Object versionObj = frontmatter.getOrDefault("version", "");
+        prompty.setVersion(versionObj != null ? versionObj.toString() : "");
         prompty.setName((String) frontmatter.getOrDefault("name", ""));
         prompty.setDescription((String) frontmatter.getOrDefault("description", ""));
         prompty.setMetadata(convertToMetadata(frontmatter));

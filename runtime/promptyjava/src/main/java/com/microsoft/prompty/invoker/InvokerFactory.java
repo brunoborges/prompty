@@ -38,6 +38,7 @@ public class InvokerFactory {
         registerParser("prompty.image", (type, prompty) -> new NoOpInvoker(prompty));
         registerParser("prompty.completion", (type, prompty) -> new NoOpInvoker(prompty));
         registerParser("prompty.chat", (type, prompty) -> new ChatParser(prompty));
+        registerParser("prompty.openai", (type, prompty) -> new ChatParser(prompty));
     }
 
     public static InvokerFactory getInstance() {
